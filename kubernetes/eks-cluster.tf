@@ -1,6 +1,6 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 21.9.0"
+  version = "~> 21.10.1"
   cluster_endpoint_public_access  = true
   cluster_addons = {
     coredns = {
