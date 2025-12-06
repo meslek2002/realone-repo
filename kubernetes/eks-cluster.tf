@@ -1,6 +1,6 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 19.0"
+  version = "~> 21.9.0"
   cluster_endpoint_public_access  = true
   cluster_addons = {
     coredns = {
@@ -16,7 +16,7 @@ module "eks" {
   
 
   cluster_name = "myAppp-eks-cluster"  
-  cluster_version = "1.33"
+  cluster_version = "1.34"
   subnet_ids = module.myAppp-vpc.private_subnets
   vpc_id = module.myAppp-vpc.vpc_id
 
