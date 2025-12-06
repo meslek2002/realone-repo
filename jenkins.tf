@@ -43,6 +43,15 @@ resource "aws_security_group" "ec2_security_group_jenkins" {
     cidr_blocks      = ["0.0.0.0/0"]
   }
 
+  # allow access on port 8080
+  ingress {
+    description      = "sonar access"
+    from_port        = 9000
+    to_port          = 9000
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }  
+
   # allow access on port 22
   ingress {
     description      = "ssh access"
@@ -86,10 +95,15 @@ data "aws_ami" "ubuntu" {
 # launch the ec2 instance and install website
 resource "aws_instance" "ec2_instance" {
   ami                    = data.aws_ami.ubuntu.id
-  instance_type          = "t2.small"
+  instance_type          = "t3.2xlarge"
   subnet_id              = aws_default_subnet.default_az1.id
   vpc_security_group_ids = [aws_security_group.ec2_security_group_jenkins.id]
   key_name               = "devopskeypair"
+  availability_zone = "us-east-1a"
+  root_block_device {
+    volume_size = 50  # Size of the root volume (in GB)
+  }  
+
   # user_data            = file("install_jenkins.sh")
 
   tags = {
@@ -119,6 +133,7 @@ resource "null_resource" "name" {
   provisioner "remote-exec" {
     inline = [
         "sudo chmod +x /tmp/install_jenkins.sh",
+        # "sed -i 's/\r$//' /tmp/install_k8s.sh",
         "sh /tmp/install_jenkins.sh",
     ]
   }
