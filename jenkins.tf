@@ -1,7 +1,7 @@
 # configured aws provider with proper credentials
 provider "aws" {
   region    = "us-east-1"
-  profile   = "yusuf"
+  profile   = "meslek2002"
 }
 
 
@@ -98,7 +98,7 @@ resource "aws_instance" "ec2_instance" {
   instance_type          = "t3.2xlarge"
   subnet_id              = aws_default_subnet.default_az1.id
   vpc_security_group_ids = [aws_security_group.ec2_security_group_jenkins.id]
-  key_name               = "devopskeypair"
+  key_name               = "demolampkp"
   availability_zone = "us-east-1a"
   root_block_device {
     volume_size = 50  # Size of the root volume (in GB)
@@ -119,7 +119,7 @@ resource "null_resource" "name" {
   connection {
     type        = "ssh"
     user        = "ubuntu"
-    private_key = file("~/Downloads/devopskeypair.pem")
+    private_key = file("~/Downloads/demolampkp.pem")
     host        = aws_instance.ec2_instance.public_ip
   }
 
